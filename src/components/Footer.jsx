@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 import { translations } from '@/data/translations';
 import { siteConfig } from '@/data/content';
@@ -7,148 +8,140 @@ import { siteConfig } from '@/data/content';
 export default function Footer() {
     const { language } = useLanguage();
     const t = translations[language];
+    const [viewCount, setViewCount] = useState(18542);
+
+    useEffect(() => {
+        // Simple local visitor counter logic
+        const storedCount = localStorage.getItem('buriram_travel_views');
+        if (storedCount) {
+            const newCount = parseInt(storedCount) + (sessionStorage.getItem('visited_this_session') ? 0 : 1);
+            setViewCount(newCount);
+            localStorage.setItem('buriram_travel_views', newCount);
+        } else {
+            localStorage.setItem('buriram_travel_views', '18542');
+        }
+        sessionStorage.setItem('visited_this_session', 'true');
+    }, []);
 
     const currentYear = new Date().getFullYear();
 
     return (
         <footer className="footer" style={{
-            background: 'var(--bru-dark-pearl)',
+            background: '#0a1d37', // Precise deep navy from reference
             color: 'white',
-            padding: '80px 0 40px',
-            position: 'relative',
-            overflow: 'hidden'
+            padding: '60px 0 40px',
+            position: 'relative'
         }}>
-            {/* Background Accent */}
-            <div style={{
-                position: 'absolute',
-                top: '-50%',
-                right: '-10%',
-                width: '600px',
-                height: '600px',
-                background: 'radial-gradient(circle, rgba(41, 64, 157, 0.05) 0%, transparent 70%)',
-                pointerEvents: 'none'
-            }}></div>
-
             <div className="container">
                 <div style={{
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-                    gap: '60px',
-                    marginBottom: '60px',
-                    position: 'relative',
-                    zIndex: 1
+                    gridTemplateColumns: '2fr 1fr',
+                    gap: '40px',
+                    alignItems: 'flex-start'
                 }}>
-                    {/* Brand Column */}
+                    {/* Left Column: Brand & Links */}
                     <div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '25px' }}>
-                            <img src="/logowhite.png" alt="BPao Logo" style={{ width: '60px', height: '60px', objectFit: 'contain' }} />
-                            <div>
-                                <h3 style={{ fontSize: '1.4rem', fontWeight: '800', color: 'white', margin: 0 }}>{siteConfig.shortName}</h3>
-                                <div style={{ height: '3px', width: '40px', background: 'var(--gradient-gold)', marginTop: '5px', borderRadius: '10px' }}></div>
-                            </div>
+                        <div style={{ marginBottom: '25px' }}>
+                            <img src="/logowhite.png" alt="BPao Logo" style={{ height: '90px', objectFit: 'contain' }} />
                         </div>
                         <p style={{
-                            color: 'rgba(255, 255, 255, 0.7)',
-                            fontSize: '0.95rem',
-                            lineHeight: '1.8',
-                            maxWidth: '300px'
+                            color: 'white',
+                            fontSize: '1rem',
+                            lineHeight: '1.6',
+                            marginBottom: '30px',
+                            maxWidth: '650px'
                         }}>
                             {t.footer_desc}
                         </p>
-                    </div>
 
-                    {/* Contact Column */}
-                    <div>
-                        <h4 style={{
-                            fontSize: '1.1rem',
-                            fontWeight: '700',
-                            marginBottom: '25px',
+                        <div className="footer-links-grid" style={{
                             display: 'flex',
-                            alignItems: 'center',
-                            gap: '10px'
+                            flexWrap: 'wrap',
+                            gap: '15px 30px',
+                            color: 'white',
+                            fontSize: '0.95rem'
                         }}>
-                            <span style={{ color: 'var(--buriram-gold)' }}>●</span> {t.contact_us}
-                        </h4>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-                            <div style={{ display: 'flex', gap: '12px' }}>
-                                <span style={{ color: 'var(--buriram-gold)', fontSize: '1.1rem' }}>📍</span>
-                                <p style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '0.9rem', margin: 0, lineHeight: '1.6' }}>
-                                    {t.address}
-                                </p>
-                            </div>
-                            <div style={{ display: 'flex', gap: '12px' }}>
-                                <span style={{ color: 'var(--buriram-gold)', fontSize: '1.1rem' }}>📞</span>
-                                <p style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '0.9rem', margin: 0 }}>
-                                    {siteConfig.phone}
-                                </p>
-                            </div>
+                            <a href="#attractions" style={{ color: 'white', textDecoration: 'none', borderRight: '1px solid rgba(255,255,255,0.3)', paddingRight: '15px' }}>{t.footer_links?.attractions}</a>
+                            <a href="#events" style={{ color: 'white', textDecoration: 'none', borderRight: '1px solid rgba(255,255,255,0.3)', paddingRight: '15px' }}>{t.footer_links?.activities}</a>
+                            <a href="#plans" style={{ color: 'white', textDecoration: 'none', borderRight: '1px solid rgba(255,255,255,0.3)', paddingRight: '15px' }}>{t.footer_links?.plans}</a>
+                            <a href="#map" style={{ color: 'white', textDecoration: 'none' }}>{t.footer_links?.map}</a>
+                            <div style={{ width: '100%', height: '0' }}></div> {/* Force break */}
+                            <a href="#" style={{ color: 'white', textDecoration: 'none', borderRight: '1px solid rgba(255,255,255,0.3)', paddingRight: '15px' }}>{t.footer_links?.business}</a>
+                            <a href="#" style={{ color: 'white', textDecoration: 'none' }}>{t.footer_links?.contact}</a>
                         </div>
                     </div>
 
-                    {/* Follow Us Column */}
+                    {/* Right Column: Contact */}
                     <div>
-                        <h4 style={{
-                            fontSize: '1.1rem',
-                            fontWeight: '700',
-                            marginBottom: '25px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '10px'
-                        }}>
-                            <span style={{ color: 'var(--buriram-gold)' }}>●</span> {t.follow_us}
-                        </h4>
-                        <div style={{ display: 'flex', gap: '15px' }}>
-                            <a href={siteConfig.facebook} target="_blank" rel="noopener noreferrer" className="social-link-footer">
-                                <span style={{ fontSize: '1.2rem' }}>f</span>
-                            </a>
-                            {/* Add more social links if needed */}
+                        <h4 style={{ fontSize: '1.1rem', fontWeight: '700', marginBottom: '20px' }}>{t.contact_us}</h4>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                            <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
+                                <span style={{ fontSize: '1.2rem' }}>📍</span>
+                                <p style={{ fontSize: '0.9rem', margin: 0, lineHeight: '1.5', opacity: 0.9 }}>
+                                    {t.address}
+                                </p>
+                            </div>
+                            <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                                <span style={{ fontSize: '1.2rem' }}>📞</span>
+                                <p style={{ fontSize: '0.9rem', margin: 0, opacity: 0.9 }}>
+                                    {siteConfig.phone}
+                                </p>
+                            </div>
+                            <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                                <span style={{ fontSize: '1.2rem' }}>✉️</span>
+                                <p style={{ fontSize: '0.9rem', margin: 0, opacity: 0.9 }}>
+                                    {siteConfig.email}
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                {/* Bottom Bar */}
+                {/* Bottom Bar: Copyright & Counter */}
                 <div style={{
-                    borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-                    paddingTop: '40px',
+                    marginTop: '50px',
+                    paddingTop: '30px',
+                    borderTop: '1px solid rgba(255,255,255,0.05)',
                     display: 'flex',
-                    flexDirection: 'column',
+                    justifyContent: 'space-between',
                     alignItems: 'center',
-                    gap: '20px',
-                    position: 'relative',
-                    zIndex: 1
+                    flexWrap: 'wrap',
+                    gap: '20px'
                 }}>
-                    <div style={{
-                        fontSize: '0.9rem',
-                        color: 'rgba(255, 255, 255, 0.5)',
-                        textAlign: 'center'
-                    }}>
-                        © {currentYear} {siteConfig.parentOrg}. {t.all_plans}.
+                    <div style={{ fontSize: '0.85rem', opacity: 0.6 }}>
+                        © {currentYear} {siteConfig.parentOrg}. {t.all_plans}
                     </div>
 
-                    {/* Visit Counter */}
                     <div style={{
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '12px',
-                        background: 'rgba(255, 255, 255, 0.05)',
-                        padding: '10px 20px',
-                        borderRadius: 'var(--radius-full)',
-                        border: '1px solid rgba(255, 255, 255, 0.1)',
-                        transition: 'var(--transition-base)'
-                    }} className="visit-counter">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'white' }}>
-                            <path d="M12 20V10" />
-                            <path d="M18 20V4" />
-                            <path d="M6 20V16" />
-                        </svg>
-                        <div style={{ display: 'flex', gap: '6px', alignItems: 'baseline' }}>
-                            <span style={{ fontSize: '1.1rem', fontWeight: '700', color: 'white' }}>16962</span>
-                            <span style={{ fontSize: '0.85rem', fontWeight: '500', color: 'rgba(255, 255, 255, 0.8)' }}>{t.visits}</span>
-                        </div>
+                        gap: '10px',
+                        background: 'rgba(255,255,255,0.05)',
+                        padding: '8px 16px',
+                        borderRadius: '8px',
+                        fontSize: '0.9rem'
+                    }}>
+                        <span style={{ fontWeight: '700' }}>{viewCount.toLocaleString()}</span>
+                        <span style={{ opacity: 0.8 }}>{t.visits}</span>
                     </div>
                 </div>
             </div>
 
+            <style jsx>{`
+                @media (max-width: 768px) {
+                    .footer > .container > div {
+                        grid-template-columns: 1fr !important;
+                    }
+                    .footer-links-grid {
+                        gap: 10px 15px !important;
+                    }
+                    .footer-links-grid a {
+                        border-right: none !important;
+                        padding-right: 0 !important;
+                        width: 100%;
+                    }
+                }
+            `}</style>
         </footer>
     );
 }
