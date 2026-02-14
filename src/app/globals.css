@@ -4561,6 +4561,27 @@ ol {
   margin-bottom: 24px;
 }
 
+.map-breadcrumb-link {
+  color: #29409D;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.map-breadcrumb-link:hover {
+  color: var(--primary-dark);
+}
+
+.map-breadcrumb-sep {
+  color: #94a3b8;
+  font-size: 0.8rem;
+}
+
+.map-breadcrumb-current {
+  color: #64748b;
+  font-weight: 400;
+}
+
 /* Title Row */
 .attractions-title-row {
   display: flex;
@@ -5354,6 +5375,52 @@ a.attraction-card {
   overflow: hidden;
 }
 
+/* Past Events & Tagging */
+.event-tag {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: rgba(139, 69, 19, 0.85);
+  /* Brown theme from reference */
+  color: white;
+  padding: 4px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+  z-index: 2;
+  backdrop-filter: blur(4px);
+}
+
+.event-card.past {
+  opacity: 0.95;
+}
+
+.event-card.past:hover {
+  opacity: 1;
+}
+
+.past-events-section {
+  background: white;
+  padding-bottom: 80px;
+}
+
+.events-year-select {
+  padding: 8px 16px;
+  border-radius: 50px;
+  border: 1px solid #ddd;
+  background: white;
+  font-family: var(--font-thai);
+  font-size: 0.95rem;
+  color: #333;
+  cursor: pointer;
+  outline: none;
+  min-width: 100px;
+}
+
+.events-year-select:focus {
+  border-color: var(--primary);
+}
+
 /* Empty State */
 .events-empty {
   display: flex;
@@ -5931,6 +5998,7 @@ a.plan-card {
    FOOTER RESPONSIVE (moved from styled-jsx)
    =============================================== */
 
+
 @media (max-width: 768px) {
   .footer-grid {
     grid-template-columns: 1fr !important;
@@ -5944,5 +6012,282 @@ a.plan-card {
     border-right: none !important;
     padding-right: 0 !important;
     width: 100%;
+  }
+}
+
+/* ===============================================
+   Event Detail Page
+   =============================================== */
+.event-detail-page {
+  padding-top: 80px;
+  /* Account for fixed header */
+  min-height: 100vh;
+}
+
+.event-breadcrumb-wrapper {
+  background: white;
+  padding: 15px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.event-breadcrumb-wrapper .attractions-breadcrumb {
+  margin-bottom: 0;
+}
+
+.event-detail-hero {
+  position: relative;
+  height: 50vh;
+  min-height: 400px;
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 60px;
+  overflow: hidden;
+  color: white;
+}
+
+.event-hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.2) 60%, rgba(0, 0, 0, 0.4) 100%);
+  z-index: 1;
+}
+
+.event-hero-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.event-hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.event-tag-hero {
+  background: var(--accent);
+  color: #333;
+  padding: 6px 16px;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  display: inline-block;
+}
+
+.event-detail-title {
+  font-size: 2.8rem;
+  font-weight: 800;
+  margin: 10px 0 20px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  line-height: 1.2;
+}
+
+.event-hero-meta {
+  display: flex;
+  gap: 30px;
+  font-size: 1.1rem;
+}
+
+.event-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.event-detail-container {
+  padding: 60px 0;
+}
+
+.event-detail-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 60px;
+}
+
+.event-share-box {
+  position: sticky;
+  top: 100px;
+  background: white;
+  padding: 30px 24px;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.share-label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+}
+
+.share-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.share-btn-pill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px 20px;
+  border-radius: 50px;
+  border: 1px solid #e5e7eb;
+  background: white;
+  color: #374151;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+}
+
+.share-btn-pill:hover {
+  background: #fdf6ec;
+  border-color: var(--accent);
+  color: #8b4513;
+  transform: translateY(-1px);
+}
+
+.share-btn-pill .icon-wrapper {
+  color: #29409D;
+  display: flex;
+  align-items: center;
+}
+
+.event-detail-content {
+  color: var(--text-secondary);
+}
+
+.event-content-body {
+  font-size: 1.15rem;
+  line-height: 1.8;
+  margin-bottom: 50px;
+  color: #444;
+}
+
+.white-space-pre {
+  white-space: pre-line;
+}
+
+.event-poster-wrapper {
+  margin-bottom: 60px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.event-poster-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.event-location-section {
+  padding: 40px;
+  background: white;
+  border-radius: var(--radius-xl);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  border: 1px solid #eee;
+}
+
+.event-address-text {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.event-address-detail {
+  color: var(--text-muted);
+  margin-bottom: 30px;
+}
+
+.event-map-container {
+  height: 350px;
+  background: #f0f0f0;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.event-location-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.btn-pill-outline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px 24px;
+  border-radius: 50px;
+  border: 1px solid #d1d5db;
+  background: white;
+  color: #1a2d6d;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-pill-outline:hover {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+/* Fix marker issues */
+.leaflet-container .leaflet-marker-icon {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+@media (max-width: 992px) {
+  .event-detail-layout {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .event-detail-sidebar {
+    order: 2;
+  }
+
+  .event-share-box {
+    position: static;
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .share-buttons {
+    flex-direction: row;
+  }
+
+  .event-detail-title {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .event-hero-meta {
+    flex-direction: column;
+    gap: 10px;
   }
 }
