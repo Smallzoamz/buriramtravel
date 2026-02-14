@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { siteConfig, tourismCategories } from '@/data/content';
 import { useLanguage } from '@/context/LanguageContext';
 import { translations } from '@/data/translations';
@@ -10,21 +11,31 @@ export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const { language, setLanguage } = useLanguage();
     const t = translations[language];
+    const pathname = usePathname();
+    const isHome = pathname === '/';
 
     const languages = [
-        { code: 'TH', name: 'ภาษาไทย', flag: '🇹🇭' },
-        { code: 'EN', name: 'English', flag: '🇺🇸' },
-        { code: 'ZH', name: 'Chinese', flag: '🇨🇳' },
-        { code: 'JP', name: 'Japanese', flag: '🇯🇵' }
+        { code: 'TH', name: 'ภาษาไทย', flagCode: 'th' },
+        { code: 'EN', name: 'English', flagCode: 'us' },
+        { code: 'ZH', name: '中文', flagCode: 'cn' },
+        { code: 'JP', name: '日本語', flagCode: 'jp' }
     ];
 
+    const getFlagUrl = (flagCode) => `https://flagcdn.com/w80/${flagCode}.png`;
+
     useEffect(() => {
+        if (!isHome) {
+            setIsScrolled(true);
+            return;
+        }
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 20);
         };
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+    }, [isHome]);
+
+    const currentLang = languages.find(l => l.code === language);
 
     return (
         <header className={`header ${isScrolled ? 'scrolled' : 'transparent'}`}>
@@ -39,18 +50,21 @@ export default function Header() {
                     </a>
 
                     <nav className="nav-desktop">
-                        <a href="https://bpao.vercel.app/" className="nav-item active">{t.home}</a>
-                        <a href="#attractions" className="nav-item">{t.attractions}</a>
-                        <a href="#events" className="nav-item">{t.events}</a>
-                        <a href="#plans" className="nav-item">{t.plans}</a>
-                        <a href="#map" className="nav-item">{t.map}</a>
+                        <a href="/" className="nav-item active">{t.home}</a>
+                        <a href="/attractions" className="nav-item">{t.attractions}</a>
+                        <a href="/events" className="nav-item">{t.events}</a>
+                        <a href="/plans" className="nav-item">{t.plans}</a>
+                        <a href="/map" className="nav-item">{t.map}</a>
                     </nav>
 
                     <div className="nav-desktop">
                         <div className="lang-selector">
                             <div className="lang-current">
-                                <span className="lang-flag">{languages.find(l => l.code === language)?.flag}</span>
-                                <span className="lang-code">{language}</span>
+                                <img
+                                    src={getFlagUrl(currentLang?.flagCode)}
+                                    alt={currentLang?.name}
+                                    className="lang-flag-img"
+                                />
                                 <span className="lang-arrow">▼</span>
                             </div>
                             <div className="lang-dropdown">
@@ -60,7 +74,11 @@ export default function Header() {
                                         className={`lang-option ${language === lang.code ? 'active' : ''}`}
                                         onClick={() => setLanguage(lang.code)}
                                     >
-                                        <span className="lang-flag">{lang.flag}</span>
+                                        <img
+                                            src={getFlagUrl(lang.flagCode)}
+                                            alt={lang.name}
+                                            className="lang-flag-img"
+                                        />
                                         <span className="lang-name">{lang.name}</span>
                                     </div>
                                 ))}
@@ -79,20 +97,25 @@ export default function Header() {
             {/* Mobile Menu */}
             <div className={`mobile-menu ${isMenuOpen ? 'active' : ''}`}>
                 <nav>
-                    <a href="https://bpao.vercel.app/" className="mobile-nav-item" onClick={() => setIsMenuOpen(false)} style={{ color: 'white' }}>{t.home}</a>
-                    <a href="#attractions" className="mobile-nav-item" onClick={() => setIsMenuOpen(false)} style={{ color: 'white' }}>{t.attractions}</a>
-                    <a href="#events" className="mobile-nav-item" onClick={() => setIsMenuOpen(false)} style={{ color: 'white' }}>{t.events}</a>
-                    <a href="#plans" className="mobile-nav-item" onClick={() => setIsMenuOpen(false)} style={{ color: 'white' }}>{t.plans}</a>
-                    <a href="#map" className="mobile-nav-item" onClick={() => setIsMenuOpen(false)} style={{ color: 'white' }}>{t.map}</a>
+                    <a href="/" className="mobile-nav-item" onClick={() => setIsMenuOpen(false)} style={{ color: 'white' }}>{t.home}</a>
+                    <a href="/attractions" className="mobile-nav-item" onClick={() => setIsMenuOpen(false)} style={{ color: 'white' }}>{t.attractions}</a>
+                    <a href="/events" className="mobile-nav-item" onClick={() => setIsMenuOpen(false)} style={{ color: 'white' }}>{t.events}</a>
+                    <a href="/plans" className="mobile-nav-item" onClick={() => setIsMenuOpen(false)} style={{ color: 'white' }}>{t.plans}</a>
+                    <a href="/map" className="mobile-nav-item" onClick={() => setIsMenuOpen(false)} style={{ color: 'white' }}>{t.map}</a>
 
-                    <div style={{ marginTop: '20px', display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                    <div className="mobile-lang-selector">
                         {languages.map(lang => (
                             <button
                                 key={lang.code}
+                                className={`mobile-lang-btn ${language === lang.code ? 'active' : ''}`}
                                 onClick={() => { setLanguage(lang.code); setIsMenuOpen(false); }}
-                                style={{ padding: '8px 16px', borderRadius: '8px', background: language === lang.code ? 'var(--primary)' : '#f0f0f0', color: language === lang.code ? 'white' : 'var(--text-primary)', fontWeight: 'bold' }}
                             >
-                                {lang.flag} {lang.code}
+                                <img
+                                    src={getFlagUrl(lang.flagCode)}
+                                    alt={lang.name}
+                                    className="lang-flag-img"
+                                />
+                                <span>{lang.name}</span>
                             </button>
                         ))}
                     </div>

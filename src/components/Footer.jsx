@@ -9,8 +9,12 @@ export default function Footer() {
     const { language } = useLanguage();
     const t = translations[language];
     const [viewCount, setViewCount] = useState(18542);
+    const [currentYear, setCurrentYear] = useState(2026);
 
     useEffect(() => {
+        // Fix hydration: get year on client only
+        setCurrentYear(new Date().getFullYear());
+
         // Simple local visitor counter logic
         const storedCount = localStorage.getItem('buriram_travel_views');
         if (storedCount) {
@@ -23,17 +27,15 @@ export default function Footer() {
         sessionStorage.setItem('visited_this_session', 'true');
     }, []);
 
-    const currentYear = new Date().getFullYear();
-
     return (
         <footer className="footer" style={{
-            background: '#0a1d37', // Precise deep navy from reference
+            background: '#0a1d37',
             color: 'white',
             padding: '60px 0 40px',
             position: 'relative'
         }}>
             <div className="container">
-                <div style={{
+                <div className="footer-grid" style={{
                     display: 'grid',
                     gridTemplateColumns: '2fr 1fr',
                     gap: '40px',
@@ -61,11 +63,11 @@ export default function Footer() {
                             color: 'white',
                             fontSize: '0.95rem'
                         }}>
-                            <a href="#attractions" style={{ color: 'white', textDecoration: 'none', borderRight: '1px solid rgba(255,255,255,0.3)', paddingRight: '15px' }}>{t.footer_links?.attractions}</a>
-                            <a href="#events" style={{ color: 'white', textDecoration: 'none', borderRight: '1px solid rgba(255,255,255,0.3)', paddingRight: '15px' }}>{t.footer_links?.activities}</a>
-                            <a href="#plans" style={{ color: 'white', textDecoration: 'none', borderRight: '1px solid rgba(255,255,255,0.3)', paddingRight: '15px' }}>{t.footer_links?.plans}</a>
-                            <a href="#map" style={{ color: 'white', textDecoration: 'none' }}>{t.footer_links?.map}</a>
-                            <div style={{ width: '100%', height: '0' }}></div> {/* Force break */}
+                            <a href="/attractions" style={{ color: 'white', textDecoration: 'none', borderRight: '1px solid rgba(255,255,255,0.3)', paddingRight: '15px' }}>{t.footer_links?.attractions}</a>
+                            <a href="/events" style={{ color: 'white', textDecoration: 'none', borderRight: '1px solid rgba(255,255,255,0.3)', paddingRight: '15px' }}>{t.footer_links?.activities}</a>
+                            <a href="/plans" style={{ color: 'white', textDecoration: 'none', borderRight: '1px solid rgba(255,255,255,0.3)', paddingRight: '15px' }}>{t.footer_links?.plans}</a>
+                            <a href="/map" style={{ color: 'white', textDecoration: 'none' }}>{t.footer_links?.map}</a>
+                            <div style={{ width: '100%', height: '0' }}></div>
                             <a href="#" style={{ color: 'white', textDecoration: 'none', borderRight: '1px solid rgba(255,255,255,0.3)', paddingRight: '15px' }}>{t.footer_links?.business}</a>
                             <a href="#" style={{ color: 'white', textDecoration: 'none' }}>{t.footer_links?.contact}</a>
                         </div>
@@ -126,22 +128,6 @@ export default function Footer() {
                     </div>
                 </div>
             </div>
-
-            <style jsx>{`
-                @media (max-width: 768px) {
-                    .footer > .container > div {
-                        grid-template-columns: 1fr !important;
-                    }
-                    .footer-links-grid {
-                        gap: 10px 15px !important;
-                    }
-                    .footer-links-grid a {
-                        border-right: none !important;
-                        padding-right: 0 !important;
-                        width: 100%;
-                    }
-                }
-            `}</style>
         </footer>
     );
 }
