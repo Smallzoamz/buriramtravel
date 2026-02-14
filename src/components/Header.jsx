@@ -30,7 +30,7 @@ export default function Header() {
         <header className={`header ${isScrolled ? 'scrolled' : 'transparent'}`}>
             <div className="container">
                 <div className="header-top-inner" style={{ height: '80px' }}>
-                    <a href="/" className="header-logo" style={{ textDecoration: 'none' }}>
+                    <a href="https://bpao.vercel.app/" className="header-logo" style={{ textDecoration: 'none' }}>
                         <img src={isScrolled ? "/logo.png" : "/logowhite.png"} alt="BPao Logo" className="logo-img" />
                         <div className="logo-text">
                             <h1 style={{ fontSize: '1.25rem', color: isScrolled ? 'var(--primary-dark)' : 'white' }}>{siteConfig.shortName}</h1>
@@ -39,7 +39,7 @@ export default function Header() {
                     </a>
 
                     <nav className="nav-desktop">
-                        <a href="/" className="nav-item active">{t.home}</a>
+                        <a href="https://bpao.vercel.app/" className="nav-item active">{t.home}</a>
                         <a href="#attractions" className="nav-item">{t.attractions}</a>
                         <a href="#events" className="nav-item">{t.events}</a>
                         <a href="#plans" className="nav-item">{t.plans}</a>
@@ -79,7 +79,7 @@ export default function Header() {
             {/* Mobile Menu */}
             <div className={`mobile-menu ${isMenuOpen ? 'active' : ''}`}>
                 <nav>
-                    <a href="/" className="mobile-nav-item" onClick={() => setIsMenuOpen(false)} style={{ color: 'white' }}>{t.home}</a>
+                    <a href="https://bpao.vercel.app/" className="mobile-nav-item" onClick={() => setIsMenuOpen(false)} style={{ color: 'white' }}>{t.home}</a>
                     <a href="#attractions" className="mobile-nav-item" onClick={() => setIsMenuOpen(false)} style={{ color: 'white' }}>{t.attractions}</a>
                     <a href="#events" className="mobile-nav-item" onClick={() => setIsMenuOpen(false)} style={{ color: 'white' }}>{t.events}</a>
                     <a href="#plans" className="mobile-nav-item" onClick={() => setIsMenuOpen(false)} style={{ color: 'white' }}>{t.plans}</a>
