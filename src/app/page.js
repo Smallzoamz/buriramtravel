@@ -1,5 +1,4 @@
 'use client';
-
 import { tourismCategories, tourismSpots, activityEvents, travelPlans, siteConfig } from '@/data/content';
 import { showAlert } from '@/components/AlertModal';
 import { useLanguage } from '@/context/LanguageContext';

@@ -2,6 +2,7 @@ import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import AlertModal from '@/components/AlertModal';
+import CookieConsent from '@/components/CookieConsent';
 import { siteConfig } from '@/data/content';
 
 export const metadata = {
@@ -20,6 +21,7 @@ export default function RootLayout({ children }) {
           {children}
           <Footer />
           <AlertModal />
+          <CookieConsent />
         </LanguageProvider>
       </body>
     </html>
